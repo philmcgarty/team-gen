@@ -7,8 +7,6 @@ const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
 
-
-
 // CORE QUESTIONS
 const questions = [
     {   // name
@@ -34,27 +32,25 @@ const questions = [
     
 ];
 
-
-
+// role specific question
 const engineerQuestion = {
     type: 'input',
     name: 'github',
     message: "Engineer's gitHub user name?"
-}
-
+};
 const internQuestion = {
-    type: ''
+    type: 'input',
+    name: 'school',
+    message: "Name of Intern's school"
+};
+
+
+
+function start(){
+    console.log(`
+    -----------------------
+    WELCOME TO TEAM BUILDER
+    -----------------------
+    `);
+    
 }
-
-// {individual q's}
-// input more team members
-
-// MANAGER QUESTION
-// Office number
-
-
-// ENGINEER QUESTION
-// Github user name
-
-// INTERN QUESTION
-// School
