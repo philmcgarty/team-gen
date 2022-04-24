@@ -7,6 +7,8 @@ const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
 
+let teamArray = [];
+
 // CORE QUESTIONS
 const questions = [
     {   // name
@@ -44,13 +46,78 @@ const internQuestion = {
     message: "Name of Intern's school"
 };
 
+const optOrExit = {
+    type: 'list',
+    name: 'addOption',
+    message: "Please pick an option",
+    choices: ['Add an Engineer', 'Add an Intern', 'Finish building team (exit)']
+};
 
 
-function start(){
-    console.log(`
+function Start(){
+    
+    Start.prototype.initialize = function(){
+        console.log(`
     -----------------------
     WELCOME TO TEAM BUILDER
     -----------------------
     `);
+    return inquirer.prompt(questions)
+        .then(data => {
+            const {name, id, email, officeNumber} = data;
+            teamArray.push(new Manager(name, id, email, officeNumber));
+            console.log(teamArray);
+            this.option();
+        })
+    };
+
+    Start.prototype.option = function(){
+        return inquirer.prompt(optOrExit)
+            .then(data => {
+                const {addOption} = data;
+                //console.log(addOption);
+                questions.pop();
+                switch(addOption){
+                    case "Add an Engineer":
+                        questions.push(engineerQuestion);
+                        this.addEngineer();
+                        break;
+                    case "Add an Intern":
+                        questions.push(internQuestion);
+                        this.addIntern();
+                        break;
+                    case "Finish building team (exit)":
+                        this.exit();
+                }
+            })
+    };
+
+    Start.prototype.addEngineer = function(){
+        console.log('You chose to add an engineer!');
+        return inquirer.prompt(questions)
+        .then(data => {
+            const {name, id, email, github} = data;
+            teamArray.push(new Engineer(name, id, email, github));
+            console.log(teamArray);
+            this.option();
+        })
+    };
+
+    Start.prototype.addIntern = function(){
+        console.log('You chose to add an intern!');
+        return inquirer.prompt(questions)
+        .then(data => {
+            const {name, id, email, school} = data;
+            teamArray.push(new Intern(name, id, email, school));
+            console.log(teamArray);
+            this.option();
+        })
+    };
     
-}
+    Start.prototype.exit = function(){
+        console.log('You chose to exit!')
+    };
+
+};
+
+new Start().initialize();
