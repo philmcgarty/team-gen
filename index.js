@@ -45,7 +45,7 @@ const engineerQuestion = {
 const internQuestion = {
     type: 'input',
     name: 'school',
-    message: "Name of Intern's school"
+    message: "Name of Intern's school?"
 };
 
 const optOrExit = {
