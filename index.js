@@ -2,10 +2,13 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 // Links to .js files required for application
+// classes
 const Employee = require('./lib/Employee.js');
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
+// HTML generating functions
+const generateHTML = require('./lib/generateHTML.js');
 
 let teamArray = [];
 
@@ -30,8 +33,7 @@ const questions = [
         type: 'input',
         name: 'officeNumber',
         message: "Manager's office number?"
-    }
-    
+    }    
 ];
 
 // role specific question
@@ -116,6 +118,7 @@ function Start(){
     
     Start.prototype.exit = function(){
         console.log('You chose to exit!')
+        generateHTML(teamArray);
     };
 
 };
