@@ -118,7 +118,18 @@ function Start(){
     
     Start.prototype.exit = function(){
         console.log('You chose to exit!')
-        generateHTML(teamArray);
+        let html = generateHTML(teamArray);
+        this.writeToFile('./dist/index.html', html);
+    };
+
+    Start.prototype.writeToFile = function(fileName, html){
+        fs.writeFile(fileName, html, err =>{
+            if(err){
+                console.log(err);
+                return;
+            }
+            console.log('New HTML team file successfully generated');
+        })
     };
 
 };
