@@ -1,0 +1,17 @@
+header {
+    background-color: rgb(231, 81, 81);    
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    padding: 30px 0;    
+}
+
+.card {
+    filter: drop-shadow(3px 3px 4px rgb(78, 76, 76));
+}
+
+.row {
+    padding-top: 50px;  
+}

@@ -12,12 +12,13 @@ const generateHTML = require('./lib/generateHTML.js');
 
 let teamArray = [];
 
+
 // CORE QUESTIONS
-const questions = [
+let questions = [
     {   // name
         type: 'input',
         name: 'name',
-        message: 'Employee name?'
+        message: "Employee's name?"
     },
     {   // employee ID
         type: 'input',
@@ -63,6 +64,8 @@ function Start(){
     -----------------------
     WELCOME TO TEAM BUILDER
     -----------------------
+
+    Enter Manager information:
     `);
     return inquirer.prompt(questions)
         .then(data => {
@@ -81,10 +84,12 @@ function Start(){
                 questions.pop();
                 switch(addOption){
                     case "Add an Engineer":
+                        console.log("Enter Engineer information:");
                         questions.push(engineerQuestion);
                         this.addEngineer();
                         break;
                     case "Add an Intern":
+                        console.log("Enter Intern information:")
                         questions.push(internQuestion);
                         this.addIntern();
                         break;
@@ -95,7 +100,7 @@ function Start(){
     };
 
     Start.prototype.addEngineer = function(){
-        console.log('You chose to add an engineer!');
+        //console.log('You chose to add an engineer!');
         return inquirer.prompt(questions)
         .then(data => {
             const {name, id, email, github} = data;
@@ -106,7 +111,7 @@ function Start(){
     };
 
     Start.prototype.addIntern = function(){
-        console.log('You chose to add an intern!');
+        //console.log('You chose to add an intern!');
         return inquirer.prompt(questions)
         .then(data => {
             const {name, id, email, school} = data;
@@ -120,8 +125,9 @@ function Start(){
         console.log('You chose to exit!')
         let html = generateHTML(teamArray);
         this.writeToFile('./dist/index.html', html);
+        this.copyStylesheet();
     };
-
+    // copied format of function from "portfolio generator" lesson
     Start.prototype.writeToFile = function(fileName, html){
         fs.writeFile(fileName, html, err =>{
             if(err){
@@ -130,6 +136,18 @@ function Start(){
             }
             console.log('New HTML team file successfully generated');
         })
+    };
+    // copied format of function from "portfolio generator" lesson
+    Start.prototype.copyStylesheet = function(){
+        fs.copyFile('./src/style.css', './dist/style.css', err =>{
+            if(err){
+                if(err){
+                    console.log(err);
+                    return;
+                }
+            }
+            
+        });
     };
 
 };
