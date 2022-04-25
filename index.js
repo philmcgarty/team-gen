@@ -18,22 +18,54 @@ let questions = [
     {   // name
         type: 'input',
         name: 'name',
-        message: "Employee's name?"
+        message: "Employee's name?",
+        validate: nameInput => {
+            if(nameInput){
+                return true;
+            } else {
+                console.log('Please enter a name');
+                return false;
+            }
+        }
     },
     {   // employee ID
         type: 'input',
         name: 'id',
-        message: "Employee's ID number?"
+        message: "Employee's ID number?",
+        validate: idInput => {            
+            if(idInput && !isNaN(parseInt(idInput))){
+                return true;
+            } else {                
+                console.log('Please enter ID Number (numbers only)');
+                return false;
+            }
+        }
     },
     {   // email
         type: 'input',
         name: 'email',
-        message: "Employee's email address?"
+        message: "Employee's email address?",
+        validate: emailInput => {
+            if (emailInput){
+                return true;
+            } else {
+                console.log('Please enter an email address');
+                return false;
+            }           
+        }
     },
     {   // individual questions here - default manager question
         type: 'input',
         name: 'officeNumber',
-        message: "Manager's office number?"
+        message: "Manager's office number?",
+        validate: officeInput => {            
+            if(officeInput && !isNaN(parseInt(officeInput))){
+                return true;
+            } else {                
+                console.log('Please enter office number (numbers only)');
+                return false;
+            }
+        }
     }    
 ];
 
@@ -41,12 +73,28 @@ let questions = [
 const engineerQuestion = {
     type: 'input',
     name: 'github',
-    message: "Engineer's gitHub user name?"
+    message: "Engineer's gitHub user name?",
+    validate: githubInput => {
+        if (githubInput){
+            return true;
+        } else {
+            console.log('Please enter a gitHub user name');
+            return false;
+        }           
+    }
 };
 const internQuestion = {
     type: 'input',
     name: 'school',
-    message: "Name of Intern's school?"
+    message: "Name of Intern's school?",
+    validate: schoolInput => {
+        if (schoolInput){
+            return true;
+        } else {
+            console.log("Please enter the Intern's school name");
+            return false;
+        }           
+    }
 };
 
 const optOrExit = {
@@ -71,7 +119,7 @@ function Start(){
         .then(data => {
             const {name, id, email, officeNumber} = data;
             teamArray.push(new Manager(name, id, email, officeNumber));
-            console.log(teamArray);
+            // console.log(teamArray);
             this.option();
         })
     };
@@ -105,7 +153,7 @@ function Start(){
         .then(data => {
             const {name, id, email, github} = data;
             teamArray.push(new Engineer(name, id, email, github));
-            console.log(teamArray);
+            // console.log(teamArray);
             this.option();
         })
     };
@@ -116,7 +164,7 @@ function Start(){
         .then(data => {
             const {name, id, email, school} = data;
             teamArray.push(new Intern(name, id, email, school));
-            console.log(teamArray);
+            // console.log(teamArray);
             this.option();
         })
     };
