@@ -16,3 +16,7 @@ h1 {
 .row {
     padding-top: 50px;  
 }
+
+main {
+    padding: 0 10px;
+}

@@ -9,17 +9,17 @@ const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
 // HTML generating functions
 const generateHTML = require('./lib/generateHTML.js');
-
+// var to store generated employee objects
 let teamArray = [];
 
-
-// CORE QUESTIONS
+// CORE QUESTIONS - var of questions used for inquirer prompt
 let questions = [
     {   // name
         type: 'input',
         name: 'name',
         message: "Employee's name?",
         validate: nameInput => {
+            // must enter a string
             if(nameInput){
                 return true;
             } else {
@@ -33,6 +33,7 @@ let questions = [
         name: 'id',
         message: "Employee's ID number?",
         validate: idInput => {            
+            // accepts only number input
             if(idInput && !isNaN(parseInt(idInput))){
                 return true;
             } else {                
@@ -46,6 +47,7 @@ let questions = [
         name: 'email',
         message: "Employee's email address?",
         validate: emailInput => {
+            // must enter a string
             if (emailInput){
                 return true;
             } else {
@@ -54,11 +56,12 @@ let questions = [
             }           
         }
     },
-    {   // individual questions here - default manager question
+    {   // Individual questions here - default Manager office number question below, on first pass
         type: 'input',
         name: 'officeNumber',
         message: "Manager's office number?",
-        validate: officeInput => {            
+        validate: officeInput => {
+            // accepts only number input 
             if(officeInput && !isNaN(parseInt(officeInput))){
                 return true;
             } else {                
@@ -69,11 +72,13 @@ let questions = [
     }    
 ];
 
-// role specific question
+// ROLE SPECIFIC QUESTIONS FOR INQUIRER PROMPT
+// gitHub user name for engineer
 const engineerQuestion = {
     type: 'input',
     name: 'github',
     message: "Engineer's gitHub user name?",
+    // must enter something
     validate: githubInput => {
         if (githubInput){
             return true;
@@ -83,11 +88,13 @@ const engineerQuestion = {
         }           
     }
 };
+// school name for intern
 const internQuestion = {
     type: 'input',
     name: 'school',
     message: "Name of Intern's school?",
     validate: schoolInput => {
+        // must enter something
         if (schoolInput){
             return true;
         } else {
@@ -96,7 +103,7 @@ const internQuestion = {
         }           
     }
 };
-
+// user choice to add more employees or exit
 const optOrExit = {
     type: 'list',
     name: 'addOption',
@@ -104,78 +111,74 @@ const optOrExit = {
     choices: ['Add an Engineer', 'Add an Intern', 'Finish building team (exit)']
 };
 
-
+// FUNCTION CONTAINING APPLICATION LOGIC
 function Start(){
-    
+    // INITIALIZES THE PROMPTS
     Start.prototype.initialize = function(){
         console.log(`
     -----------------------
     WELCOME TO TEAM BUILDER
     -----------------------
 
-    Enter Manager information:
+Enter Manager information:
     `);
+    // ASKS MANAGER QUESTIONS
     return inquirer.prompt(questions)
         .then(data => {
             const {name, id, email, officeNumber} = data;
-            teamArray.push(new Manager(name, id, email, officeNumber));
-            // console.log(teamArray);
-            this.option();
+            teamArray.push(new Manager(name, id, email, officeNumber)); // pushes manager object to array
+            this.option(); // asks user to either enter more employees or exit
         })
     };
-
+    // FUNCTION TO ASK USER TO ADD EMPLOYEES OR EXIT
     Start.prototype.option = function(){
         return inquirer.prompt(optOrExit)
             .then(data => {
+                console.log(""); // adds empty line for easier reading
                 const {addOption} = data;
                 //console.log(addOption);
-                questions.pop();
+                questions.pop(); // removes the final question which is changeable depending on role type
                 switch(addOption){
                     case "Add an Engineer":
                         console.log("Enter Engineer information:");
-                        questions.push(engineerQuestion);
+                        questions.push(engineerQuestion); // adds github user question to end of question array
                         this.addEngineer();
                         break;
                     case "Add an Intern":
                         console.log("Enter Intern information:")
-                        questions.push(internQuestion);
+                        questions.push(internQuestion); // adds school question to end of question array
                         this.addIntern();
                         break;
                     case "Finish building team (exit)":
-                        this.exit();
+                        this.exit(); // to end and create HTML
                 }
             })
     };
-
+    // FUNCTION PROMPTS FOR ENGINEER EMPLOYEE INPUT
     Start.prototype.addEngineer = function(){
-        //console.log('You chose to add an engineer!');
         return inquirer.prompt(questions)
         .then(data => {
             const {name, id, email, github} = data;
-            teamArray.push(new Engineer(name, id, email, github));
-            // console.log(teamArray);
-            this.option();
+            teamArray.push(new Engineer(name, id, email, github)); // construct new engineer object from input
+            this.option(); // asks user to either enter more employees or exit
         })
     };
-
+    // FUNCTION PROMPTS FOR INTERN EMPLOYEE INPUT
     Start.prototype.addIntern = function(){
-        //console.log('You chose to add an intern!');
         return inquirer.prompt(questions)
         .then(data => {
             const {name, id, email, school} = data;
-            teamArray.push(new Intern(name, id, email, school));
-            // console.log(teamArray);
-            this.option();
+            teamArray.push(new Intern(name, id, email, school)); // construct new intern object from input
+            this.option(); // asks user to either enter more employees or exit
         })
     };
-    
+    // FUNCTION TO REQUEST HTML GENERATION AND REQUEST SAVE FILE & COPY CSS FILE
     Start.prototype.exit = function(){
-        console.log('You chose to exit!')
-        let html = generateHTML(teamArray);
-        this.writeToFile('./dist/index.html', html);
-        this.copyStylesheet();
+        let html = generateHTML(teamArray); // sends team data to be generated to HTML
+        this.writeToFile('./dist/index.html', html); // sends HTML to be written to file
+        this.copyStylesheet(); // requests stylesheet to be copied to "dist" folder
     };
-    // copied format of function from "portfolio generator" lesson
+    // FUNCTION WRITES HTML TO FILE - Used format of function from "portfolio generator" lesson
     Start.prototype.writeToFile = function(fileName, html){
         fs.writeFile(fileName, html, err =>{
             if(err){
@@ -185,7 +188,7 @@ function Start(){
             console.log('New HTML team file successfully generated');
         })
     };
-    // copied format of function from "portfolio generator" lesson
+    // FUNCTION COPIES CSS FILE FROM FILE IN "src" FOLDER - Used format of function from "portfolio generator" lesson
     Start.prototype.copyStylesheet = function(){
         fs.copyFile('./src/style.css', './dist/style.css', err =>{
             if(err){
@@ -194,10 +197,12 @@ function Start(){
                     return;
                 }
             }
-            
+            console.log('CSS file successfully generated');
+            console.log('See "dist" folder for new HTML & CSS files!');
         });
     };
 
 };
 
+// call to initialize the application
 new Start().initialize();
