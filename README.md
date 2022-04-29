@@ -39,12 +39,12 @@ Example of generated HTML page
 
 ![Example site](./src/website.png)
 
+[Video Demo](https://drive.google.com/file/d/1mXTy7loUgiEYVYU0BdUfvVQysE-THQe6/view)
+
 ## Questions
 
 [GitHub](https://github.com/philmcgarty)
 
 [Team-Generator on GitHub](https://github.com/philmcgarty/team-gen)
-
-[Video Demo](https://drive.google.com/file/d/1mXTy7loUgiEYVYU0BdUfvVQysE-THQe6/view)
 
 If you have any questions regarding this project, or require any further information, contact me via gitHub.
